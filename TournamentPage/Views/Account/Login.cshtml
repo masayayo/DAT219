@@ -1,0 +1,109 @@
+@using System.Collections.Generic
+@using Microsoft.AspNetCore.Http
+@using Microsoft.AspNetCore.Http.Authentication
+@model LoginViewModel
+@inject SignInManager<ApplicationUser> SignInManager
+
+@{
+    ViewData["Title"] = "Logg inn";
+}
+
+<h2>@ViewData["Title"].</h2>
+<div class="row">
+    <div class="col-sm-12">
+        @if(@ViewData["StatusMessage"] != null)
+        {
+            if(@ViewData["Success"].Equals(MessageStatus.Success))
+            {
+                <p class="alert alert-success"> @ViewData["StatusMessage"] </p>
+            }
+            else
+            {
+                <p class="alert alert-danger"> @ViewData["StatusMessage"] </p>
+            }    
+        }
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <section>
+            <form asp-controller="Account" asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
+                <h4>Bruk en lokal konto for å logge inn.</h4>
+                <hr />
+                
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Email" class="col-md-2 control-label">Epost</label>
+                    <div class="col-md-10">
+                        <input asp-for="Email" class="form-control" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Password" class="col-md-2 control-label">Passord</label>
+                    <div class="col-md-10">
+                        <input asp-for="Password" class="form-control" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <div class="checkbox">
+                            <label asp-for="RememberMe">
+                                <input asp-for="RememberMe" />
+                                @Html.DisplayNameFor(m => m.RememberMe)
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <button type="submit" class="btn btn-default">Logg inn</button>
+                    </div>
+                </div>
+                <p>
+                    <a asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]">Registrer en ny bruker?</a>
+                </p>
+                <p>
+                    <a asp-action="ForgotPassword">Har du glemt passordet?</a>
+                </p>
+            </form>
+        </section>
+    </div>
+    <div class="col-md-4">
+        <section>
+            <h4>Bruk en annen tjeneste for å logge inn.</h4>
+            <hr />
+            @{
+                var loginProviders = SignInManager.GetExternalAuthenticationSchemes().ToList();
+                if (loginProviders.Count == 0)
+                {
+                    <div>
+                        <p>
+                            Det finnes ingen andre authoriseringstjenester som er konfigurert. Se <a href="https://go.microsoft.com/fwlink/?LinkID=532715">denne artikkelen</a>
+                            for detaljer om hvordan denne ASP.NET applikasjonen kan settes opp for å støtte innlogging via ekstrene tjenester. 
+                        </p>
+                    </div>
+                }
+                else
+                {
+                    <form asp-controller="Account" asp-action="ExternalLogin" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
+                        <div>
+                            <p>
+                                @foreach (var provider in loginProviders)
+                                {
+                                    <button type="submit" class="btn btn-default" name="provider" value="@provider.AuthenticationScheme" title="Log in using your @provider.DisplayName account">@provider.AuthenticationScheme</button>
+                                }
+                            </p>
+                        </div>
+                    </form>
+                }
+            }
+        </section>
+    </div>
+</div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

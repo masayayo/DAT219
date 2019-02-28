@@ -1,0 +1,18 @@
+@model ApplicationUser
+
+@{
+    ViewBag.Title = "Slett brukerprofil";
+    Layout = "_Layout";
+}
+
+<div class="container alert alert-warning" style="margin-top: 10px;">
+    <p><strong>@Model.FirstName</strong>!</p> 
+    <p>Du er i nå ferd med å slette din brukerkonto!
+    Er du sikker på at du ønsker å gjøre denne handlingen? Alle dine opplysninger vil gå tapt!</p>
+    <div class="btn-toolbar" style="margin-top:20px;">
+        <form asp-controller="UserProfile" asp-action="DeleteUserProfile2" asp-route-id="@Model.Id" method="POST">
+            <input type="submit" value="Slett" class="btn btn-danger" style="margin-right: 10px;"></input> 
+        <a asp-controller="UserProfile" asp-action="ShowUserProfile" class="btn btn-info">Avbryt</a>
+        </form>
+    </div>
+</div>

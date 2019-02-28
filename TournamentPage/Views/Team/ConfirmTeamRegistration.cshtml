@@ -1,0 +1,47 @@
+@model Team
+
+@{
+    ViewBag.Title = "Bekreft lag informasjon";
+    Layout = "_Layout";
+}
+<div class="well container">
+    <h2>Bekreft lag</h2>
+    <table class="table">
+   
+     <table class="table">
+      <thead>
+   
+      </thead>
+      <tbody>
+       <tr>
+        <td><b>Lag navn</b></td>
+        <td>@Model.TeamName</td>
+      </tr>
+       <tr>
+        <td><b>Lag medlemmer</b></td>
+        <td>@Model.User</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>@Model.TeamMember</td>
+      </tr>
+         <tr>
+        <td></td>
+        <td>@Model.TeamMember</td>
+      </tr>
+      </tbody>
+      </table>
+    
+  
+
+  <form asp-controller="Team" asp-action="Delete" asp-route-id="@Model.TeamId" method="post">
+        <div class="col-sm-2">
+        </div>
+        <div class="col-sm-8">
+                <a asp-controller="UserProfile" asp-action="ShowUserProfile"  class="btn btn-success" placeholder="">Bekreft lag</a>
+                <a asp-controller="Team" asp-action="EditTeam" asp-route-id="@Model.TeamId" class="btn btn-default" placeholder="">Gå tilbake å rediger opplysningene</a>
+                @*<input type="hidden" name="TournamentId" value="@Model.TournamentId" />*@
+                <button class="btn btn-danger" type="submit">Slett</button>
+        </div>
+    </form>
+</div>

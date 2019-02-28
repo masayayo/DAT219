@@ -1,0 +1,18 @@
+@model Tournament
+
+@{
+    ViewBag.Title = "Slette turneringen?";
+    Layout = "_Layout";
+}
+
+<div class="container alert alert-warning" style="margin-top: 10px;">
+    <p><strong>@Model.TournamentName</strong>!</p> 
+    <p>Du er i nå ferd med å slette denne turneringen!
+    Er du sikker på at du ønsker å gjøre denne handlingen?</p>
+    <div class="btn-toolbar" style="margin-top:20px;">
+        <form asp-controller="Tournament" asp-action="Delete2" asp-route-id="@Model.TournamentId" method="POST">
+            <button type="submit" class="btn btn-danger" style="margin-right: 10px;"><span class="fa fa-trash-o"></span> Slett</button> 
+            <a asp-controller="Tournament" asp-action="SeeTournamentDetails" asp-route-id="@Model.TournamentId" asp-route-returnurl="/UserProfile/ShowUserProfile" class="btn btn-info">Avbryt</a>
+        </form>
+    </div>
+</div>

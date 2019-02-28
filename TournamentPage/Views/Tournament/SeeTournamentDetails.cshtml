@@ -1,0 +1,123 @@
+@model Tournament
+
+@inject SignInManager<ApplicationUser> signInManager
+@inject UserManager<ApplicationUser> userManager
+
+@{
+    ApplicationUser currentUser = null;
+
+    if(signInManager.IsSignedIn(User))
+    {
+        currentUser = await userManager.GetUserAsync(User);
+    }
+}
+
+@{
+    ViewBag.Title = "Om turneringen";
+    Layout = "_Layout";
+}
+
+<script>
+var basePath = "http://tpage.azurewebsites.net/images";
+var tournamentPicture = basePath+"@Model.FeaturedImage";
+</script>
+<script src="~/lib/upload-images/js/upload-featured-image.js"></script>
+
+<div class="container" style="margin-top: 10px;">
+    <div id="tournament-picture" style="padding:30px;">
+        <div class="col-sm-7" style="background:rgba(0,0,0,0.7);border-radius:10px;">
+            <h2>@Model.TournamentName</h2>
+        <div class="row">
+            <div class="col-sm-3">
+                <p>Sted: </p>
+                <p>Registreringsavgift:</p>
+                <p>Påmelding starter:</p>
+                <p>Påmelding slutter:</p>
+                <p>Turneringen starter:</p>
+                <p>Turneringen slutter:</p>
+                <p>Fra alder:</p>
+                <p>Til alder:</p>
+                <p>Ansvarlig:</p>
+                <p>Sportsgren: </p>
+                <p>Påmeldingstype:</p>
+                <p>Turneringstype: </p>
+                <p>Kjønn: </p>
+                <p>Antall påmeldte lag: </p>
+                <p>Antall påmeldte spillere: </p>
+            </div>
+            <div class="col-sm-4">
+                <p>@Model.Location</p>
+                <p>@Model.RegisterFee </p>
+                <p>@Model.RegisterDateStart </p>
+                <p>@Model.RegisterDateEnd </p>
+                <p>@Model.TournamentDateStart</p>
+                <p>@Model.TournamentDateEnd</p>
+                <p>@Model.AgeFrom </p>
+                <p>@Model.AgeTo </p>
+                <p>@Model.User.FirstName @Model.User.LastName</p>
+                <p>@Model.SportType.SportTypeName</p>
+                <p>@Model.RegisterType.RegisterTypeName</p>
+                <p>@Model.TournamentType.TournamentTypeName</p>
+                <p>@Model.GenderType.GenderTypeName </p>
+                <p>@ViewBag.NumberOfTeams </p>
+                <p>@ViewBag.NumberOfPlayers </p>
+            </div>
+            </div>
+            <!--<div class="col-sm-5">
+                <div id="tournament-picture" style="width:300px;height:200px;"></div>
+            </div>-->
+        </div>
+        <h2>
+         <div class="btn-toolbar">
+                <a asp-controller="Tournament" asp-action="ShowTournamentTeam" asp-route-id="@Model.TournamentId" class="btn btn-success"><span class="fa fa-users"></span> Lagene</a>
+                <a asp-controller="Tournament" asp-action="ShowTournamentPlayers" asp-route-id="@Model.TournamentId" class="btn btn-success "><span class="fa fa-user"></span> Spillerne</a> 
+                <a asp-controller="Tournament" asp-action="ShowTournamentMatchups" asp-route-id="@Model.TournamentId" class="btn btn-warning "><span class="fa fa-file-text-o"></span> Kampoppsettet </a> 
+                @* Only the logged in user who is the creator of the tournament can edit it if todays date is less than the tournament start date *@
+                @* A delete tournament button could also be added here. I have done that, but do we want to keep it? *@
+                @if(Model.User == currentUser && (Model.RegisterDateStart).CompareTo(DateTime.Now)==1)
+                {
+                    <a asp-controller="Tournament" asp-action="EditTournament" asp-route-id="@Model.TournamentId" class="btn btn-danger"><span class="fa fa-pencil fa-fw"></span> Rediger turnering</a>
+                    <a asp-controller="Tournament" asp-action="Delete" asp-route-id="@Model.TournamentId"  class="btn btn-danger" type="submit"><span class="fa fa-trash-o"></span> Slett</a>
+                }
+                @if(Model.User == currentUser){
+                    <a class="btn btn-danger" href="javascript:void(0);" onclick="javascript:changePicModal()"><span class="fa fa-pencil fa-fw"></span> Endre bilde</a>
+                }
+                <a href=@ViewData["returnurl"] class="btn btn-default"><span class="fa fa-arrow-left"></span> Tilbake</a>
+         </div>
+        </h2>
+    </div>
+</div>
+<div class='modal fade' id='changePicture' role='dialog' style='z-index:9999;'>
+    <div class='modal-dialog'>
+    <div class='modal-content'>
+        
+        <div class='modal-header'>
+            <h4 class='modal-title'>Endre turneringsbilde</h4>
+        </div>
+        
+        <div class='modal-body'>
+            <div style='width:100%;overflow:hidden;'>
+                <div style='width:50%;height:100%;float:left;text-align:left;'>
+                <form method="post" enctype="multipart/form-data" asp-action="EditFeaturedImage" asp-controller="Tournament">
+                    Velg bilde for å laste opp:
+                    <input asp-for="FeaturedImage" type="file" name="files" id="fileToUpload" class="filestyle" data-input="false" data-buttonText="Velg bilde" multiple accept="image/*">
+                    <input id="Id" type="hidden" name="Id" value="@Model.TournamentId">
+                    <span asp-validation-for="FeaturedImage" class="text-danger"></span>
+                    <input type="submit" value="Last opp" name="submit" class="btn btn-success">
+                </form>
+                </div>
+
+                <div style='width:50%;height:100%;float:right;text-align:right;'>
+                <div class="tournament-picture" style="width:250px;height:250px;">
+                </div>
+                </div>
+            </div>
+        </div>
+
+        <div class='modal-footer'>
+            <button type='button' class='btn btn-default' data-dismiss='modal'>Lukk</button>
+        </div>
+
+    </div>
+    </div>
+</div>

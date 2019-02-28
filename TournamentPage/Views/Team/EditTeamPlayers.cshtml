@@ -1,0 +1,54 @@
+@model TournamentPage.Models.TeamViewModels.TeamViewModel
+
+@{
+    ViewBag.Title = "Edit Team";
+}
+
+<div class="container" style="margin-top: 10px;">
+    <div class="row">
+        <div class="col-sm-4"></div>
+        <div class="col-sm-8">
+            @* Overskrift *@
+            <h2>Administrer lagets spillere</h2> 
+        </div>
+        <div class="col-sm-4"></div>
+        <div asp-validation-summary="All" class="text-danger col-sm-8"></div>
+        <form method="POST" asp-controller="Team" asp-action="AddTeamPlayers" class="form-horizontal">
+        
+        <input type="hidden" asp-for="TeamId" />
+        
+        <div class="form-group">
+            
+            <label asp-for="NewPlayers" class="col-sm-4 control-label">Søk blant brukere</label>
+                <div class="col-sm-8">
+                    <select id="userList" asp-for="NewPlayers" class="form-control" multiple>
+                                <option disabled selected value="">Velg bruker: </option>
+                            
+                                @foreach(var u in Model.Users){
+                                    <option id="@u.Id" value="@u.Email">@u.FirstName @u.LastName</option>
+                                }
+
+                    </select>
+                </div>
+            </div>
+
+            @* Submit knapp *@
+            <div class="form-group">
+                <div class="col-sm-4"></div>
+                <div class="col-sm-4">
+                    <button class="btn btn-success" type="submit">Redigering fullført</button>
+                    <a asp-controller="Team" asp-action="SeeTeamPlayers" asp-route-id="@Model.TeamId" class="btn btn-default">Avbryt</a>
+                </div>
+            </div>
+        
+        </form>
+
+    </div>
+
+
+@{Html.RenderPartial("EditTeamPlayersPartial", Model.Players);}
+</div>
+
+<script>
+$("#userList").chosen({no_results_text: "Oops, nothing found!"});
+</script>

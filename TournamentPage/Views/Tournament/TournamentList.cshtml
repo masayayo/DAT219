@@ -1,0 +1,60 @@
+@model IEnumerable<TournamentPage.Models.Tournament>
+
+@{
+    ViewData["Title"] = "Turneringer";
+}
+<h2>@ViewData["Title"]</h2>
+
+@* SEARCH *@
+<form asp-action="Index" method="get">
+    <div class="form-actions no-color">
+        <p>
+            <input type="text" name="SearchString" value="@ViewData["currentFilter"]" />
+            <input type="submit" value="Søk" class="btn btn-warning" />
+        </p>
+    </div>
+</form>
+
+@* TABLE *@
+<table id="TournamentTableContent" class="table">
+    <thead>
+        @* Columns *@
+        <div class="col-sm-3">
+            @* If you change the names here you also have to change 
+            the names in the switch in Tournament/SortTournamentList.
+            Maybe we could set this names with the viewbags instead? *@
+            <th><a class="TournamentListColumnName" name="SportType" value=true href="#">Sportstype</a><span class="arrow">&nbsp; &nbsp;<i class="fa fa-angle-up fa-2x" aria-hidden="true"></i></span></th>
+            <th><a class="TournamentListColumnName" name="TournamentName" value=true href="#">Turneringsnavn</a><span class="arrow">&nbsp; &nbsp;<i class="fa fa-angle-up fa-2x" aria-hidden="true"></i></span></th>
+            <th><a class="TournamentListColumnName" name="Location" value=true  href="#">Sted</a><span class="arrow">&nbsp; &nbsp;<i class="fa fa-angle-up fa-2x" aria-hidden="true"></i></span></th>
+            <th><a class="TournamentListColumnName" name="GenderType" value=true  href="#">Kjønn</a><span class="arrow">&nbsp; &nbsp;<i class="fa fa-angle-up fa-2x" aria-hidden="true"></i></span></th>
+            <th><a class="TournamentListColumnName" name="TournamentType" value=true  href="#">Modus</a><span class="arrow">&nbsp; &nbsp;<i class="fa fa-angle-up fa-2x" aria-hidden="true"></i></span></th>
+            <th><a class="TournamentListColumnName" name="RegistrationType" value=true  href="#">Registreringstype</a><span class="arrow">&nbsp; &nbsp;<i class="fa fa-angle-up fa-2x" aria-hidden="true"></i></span></th>
+            <th>Status</th>
+            <th>Påmeldingen avslutter</th>
+            <th></th>
+        </div>
+    </thead>
+    <tbody id="TournamentRespons">
+        @{Html.RenderPartial("TournamentListPartial", Model);}
+    </tbody>
+</table>
+
+@* PAGING *@
+@* Prev_Button *@
+<a asp-action="Index"
+    asp-route-sortOrder="@ViewData["CurrentSort"]"
+    asp-route-page=""
+    asp-route-currentFilter="@ViewData["CurrentFilter"]"        
+    class="btn btn-warning">
+    Forrige
+</a>
+
+@* Next_Button *@
+<a asp-action="Index"
+    asp-route-sortOrder="@ViewData["CurrentSort"]"
+    asp-route-page=""
+    asp-route-currentFilter="@ViewData["CurrentFilter"]"
+    class="btn btn-warning">
+    Neste
+</a>
+<a href=@ViewData["returnurl"] class="btn btn-default"><span class="fa fa-arrow-left"></span> Tilbake</a>

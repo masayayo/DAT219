@@ -1,0 +1,24 @@
+@model IndividualRegistrationViewModel
+
+@{
+    ViewBag.Title = "Individuell påmelding til turnering";
+    Layout = "_Layout";
+}
+
+<div class="container">
+    <div class="row">
+        <h2>Individuell påmelding til @Model.Tournament.TournamentName </h2>
+        <p>Spesifiser type påmelding</p>
+        <form id="IndividualRegForm" asp-controller="Registration" asp-action="IndividualRegistration" asp-route-applicationId="@Model.User.Id" asp-route-tournamentId= "@Model.Tournament.TournamentId" method="POST">
+            <label class="checkbox-inline"><input id="IndividualRadioBox" type="radio" name="IndividualRadioBox"> Individuell påmelding</label>
+            <div id="TheTeamContainerDiv"></div>
+            <div class="form-group" style="margin-top:10px;">
+                <input type="submit"class="btn btn-success" value="Påmelding"/>
+                <a asp-controller="Tournament" asp-action="TournamentList" class="btn btn-default">Tilbake</a>
+            </div>
+            @* This values is taken by AJAX and used to peform a control  *@ 
+            <input id="TournamentId" type="hidden" value="@Model.Tournament.TournamentId">
+            <input id="IndividualUserId" type="hidden" value="@Model.User.Id">
+        </form>
+    </div>
+</div>

@@ -1,0 +1,63 @@
+@model string
+@inject IJsonHelper Json;
+@{
+    ViewData["Title"] = "Show Tournament Matchups";
+}
+
+<style>
+.label {
+  color:black;
+}
+</style>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<div class="row">
+    <div class="col-md-12 demo-single" style="margin-top:100px;">
+</div>
+
+<script type="text/javascript">
+
+/* Get the json matchupdata from the controller and deserialize it */
+var infojson = @Html.Raw(Newtonsoft.Json.JsonConvert.DeserializeObject(Model));
+
+/* This json is only used if there's only the first generated round' */
+var singleElimination = {"teams": [],"results": [[[]]]}
+
+/*If infojson is the generated json string we publish the relevant data into the jQuery brackets */
+if(infojson.length > 1){
+   for(var i = 0; i < (infojson.length/2); i++){
+    if(infojson[i].Round = 1){
+      singleElimination.teams.push([infojson[i].TeamName, infojson[i+1].TeamName]);
+      singleElimination.results[0][0].push([infojson[i].Score, infojson[i+1].Score]);
+    }  
+  }
+}else{ /* Else use the json generated from the jQuery brackets library */
+  singleElimination = infojson;
+}
+
+
+/* Function for saving new json string for when the bracket info is edited */
+function saveMod(data,userData){
+  data.tournamentId = "@ViewBag.TournamentId";
+
+  $.post("/Tournament/UpdateTournamentMatchups", {contentType: 'text',
+                                  dataType: 'text',
+                                  type: 'post',
+                                  data: JSON.stringify(data)})
+}
+
+
+/* init function */
+$(function() {
+    var container = $('.demo-single')
+    container.bracket({
+      init: singleElimination,
+      save: saveMod,
+      userData: null,
+      disableToolbar: true,
+      disableTeamEdit: true
+      })
+ 
+    var data = container.bracket('data')
+  })
+</script>

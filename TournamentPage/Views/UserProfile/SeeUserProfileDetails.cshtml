@@ -1,0 +1,31 @@
+@model ApplicationUser
+
+@{
+    ViewBag.Title = "Bruker detaljer";
+    Layout = "_Layout";
+}
+
+<div class="conatiner" style="margin-top: 20px;">
+    <div class="row">
+        <div class="col-sm-6">
+            <table class="table">
+                <thead>
+                    <tr class="info"><th>Opplysninger om din profil</th><td></td></tr>
+                </thead>
+                <tbody>
+                    <tr><td>Navn: </td><td> @Model.FirstName @Model.LastName </td></tr>
+                    <tr><td>Kallenavn: </td><td>@Model.NickName</td></tr>
+                    <tr><td>Postnummer og sted: </td><td>  @Model.PostalCode @Model.Address </td></tr>
+                    <tr><td>Alder: </td><td>  @ViewBag.Age</td></tr>
+                    <tr><td>By: </td><td>@Model.Town</td></tr>
+                    
+                    <tr><td>Registrert: </td><td>@Model.RegisterDate</td></tr>
+                    <tr><td>Tlf: </td><td>@Model.PhoneNumber</td></tr>
+                    <tr><td>Epost: </td><td>@Model.Email</td></tr>
+                </tbody>
+            </table>
+            <a asp-controller="UserProfile" asp-action="EditUserProfile" asp-route-id="@Model.Id"  class="btn btn-success" style="margin-top: 10px;">Rediger</a> 
+            <a asp-controller="UserProfile" asp-action="ShowUserProfile" class="btn btn-info" style="margin-top: 10px;">Gå tilbake til profilsiden</a> 
+        </div>
+    </div>
+</div>

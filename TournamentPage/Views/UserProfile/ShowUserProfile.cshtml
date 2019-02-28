@@ -1,0 +1,224 @@
+@model UserProfile
+
+@{
+    ViewBag.Title = "Brukerprofil";
+    Layout = "_Layout";
+}
+
+<!-- style="padding: 10px; border: 2px solid #5bc0de; border-radius: 25px;" -->
+<script>
+var userId = "@ViewBag.UserId";
+var basePath = "http://tpage.azurewebsites.net/images";
+var profilePicture = basePath+"@ViewBag.ProfilePicture";
+</script>
+<script src="~/lib/upload-images/js/upload-profile-picture.js"></script>
+
+<div class="container col-sm-12">
+        <div class="row">
+            <div class="col-sm-12">
+                
+                <div class="col-sm-12"><h2 class="col-sm-6">Velkommen </br> @ViewBag.UserName</h2>
+                <div class="col-sm-6" style="text-align:right;padding-top:25px;">
+                      <div style="float:right;"><div id="profile-picture" style="width:250px;height:250px;"></div>
+                      <a href="javascript:void(0);" onclick="javascript:changePicModal()" class="btn btn-info">Endre profilbilde</a></div>
+                </div>
+                  </div>
+                <div>
+                  <div class='modal fade' id='changePicture' role='dialog' style='z-index:9999;'>
+                     <div class='modal-dialog'>
+                        <div class='modal-content'>
+                           
+                           <div class='modal-header'>
+                              <h4 class='modal-title'>Endre profilbilde</h4>
+                           </div>
+                           
+                           <div class='modal-body'>
+                              <div style='width:100%;overflow:hidden;'>
+                                 <div style='width:50%;height:100%;float:left;text-align:left;'>
+                                    <form method="post" id="updateProfilePictureForm" enctype="multipart/form-data" asp-action="Upload" asp-controller="UserProfile">
+                                       Velg bilde for å laste opp:
+                                       <input type="file" name="files" id="fileToUpload" class="filestyle" data-input="false" data-buttonText="Velg bilde" multiple accept="image/*">
+                                       <input type="submit" value="Last opp" name="submit" class="btn btn-success">
+                                    </form>
+                                 </div>
+
+                                 <div style='width:50%;height:100%;float:right;text-align:right;'>
+                                    <div class="profile-picture" style="width:250px;height:250px;">
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+
+                           <div class='modal-footer'>
+                              <button type='button' class='btn btn-default' data-dismiss='modal'>Lukk</button>
+                           </div>
+
+                        </div>
+                     </div>
+                  </div>
+
+               </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4" >
+                <h2>
+                    <span class="fa fa-user "></span><span> Brukerprofil</span>
+                </h2>
+            </div>
+            <div class="col-sm-8">
+                
+                <h2>
+                    <div class="btn-toolbar pull-left" style="padding: 5px 0px;">
+                        <a asp-controller="UserProfile" asp-action="SeeUserProfileDetails" asp-route-id="@ViewBag.UserId" class="btn btn-success">Se</a>
+                        <a asp-controller="UserProfile" asp-action="EditUserProfile" asp-route-id="@ViewBag.UserId" class="btn btn-info "><span class="fa fa-pencil fa-fw"></span> Rediger</a> 
+                        <a asp-controller="Manage" asp-action="ChangePassword" class="btn btn-warning "><span class="fa fa-key fa-fw"></span> Bytt passord</a> 
+                        <a asp-controller="UserProfile" asp-action="DeleteUserProfile" asp-route-id="@ViewBag.UserId" class="btn btn-danger"><span class="fa fa-trash-o"></span> Slett</a>
+                    </div>
+                </h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 pull-left">
+                @if(@ViewData["StatusMessage"] != null)
+                {
+                    if(@ViewData["Success"].Equals(MessageStatus.Success))
+                    {
+                        <p class="alert alert-success"> @ViewData["StatusMessage"] </p>
+                    }
+                    else
+                    {
+                        <p class="alert alert-danger"> @ViewData["StatusMessage"] </p>
+                    }    
+                }
+            </div>
+        </div>
+    <div class="row">
+        <div class="col-sm-12 pull-left">
+            @* The teams the user belongs to *@
+            <table class="table">
+            <thead>
+                <tr class="info">
+                    <th>Mine lag</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if(Model.UsersTeams.Count != 0)
+                {
+                    foreach(var t in Model.UsersTeams)
+                    {
+                        if(t.Team != null)
+                        {
+                            <tr>
+                                <td><a asp-controller="Team" asp-action="SeeTeamPlayers"  asp-route-id="@t.Team.TeamId">@t.Team.TeamName</a>
+                                @* If the logged in user is contactperson for the team *@
+                                @if(@ViewBag.UserId == @t.Team.User.Id)
+                                {
+                                    <span class="pull-right">Lagleder</span>
+                                }
+                                </td>
+                            </tr>
+                        }
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td>Du er ikke medlem av noe lag.</td>
+                    </tr>
+                }
+            </tbody>
+            </table>
+            @* The tournaments the user has participated on *@
+            <table class="table">
+            <thead>
+                <tr class="info">
+                    <th>Påmeldinger: <br>Turnering</th>
+                    <th><br>Individuell registrering/Lagregistrering</th>
+                    <th><br>Avmelding</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if(Model.UsersParticipatedTournaments.Count != 0)
+                {
+                    foreach(var t in Model.UsersParticipatedTournaments)
+                    {
+                        @if(t.Tournament!=null)
+                        {
+                            <tr>
+                                @* Tournamentname *@
+                                    <td><a asp-controller="Tournament" asp-action="SeeTournamentDetails" asp-route-id="@t.Tournament.TournamentId" asp-route-returnurl=@ViewData["returnurl"] >@t.Tournament.TournamentName</a></td>
+                                @* If team registration *@
+                                @if(@t.Team != null)
+                                {
+                                    <td><a asp-controller="Tournament" asp-action="SeeTeamPlayers"  asp-route-id="@t.Team.TeamId"> @t.Team.TeamName </a></td>
+                                    @* If the logged in user is contactperson for the team - only he can delete the team *@
+                                    @if(@ViewBag.UserId == @t.Team.User.Id && DateTime.Compare(DateTime.Now, @t.Tournament.RegisterDateEnd) < 0)
+                                    {
+                                        <td><a asp-controller="Registration" asp-action="RemoveTournamentTeamRegistration" asp-route-teamId="@t.Team.TeamId" asp-route-tournamentId="@t.Tournament.TournamentId">Slett</a></td>
+                                    }
+                                    @* A normal team member cannot delete the team from a tournament *@
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                }
+                                @* If individual registration *@
+                                else if(@t.Team == null)
+                                {
+                                    <td>Individuell</td>
+                                    @if(DateTime.Compare(DateTime.Now, @t.Tournament.RegisterDateEnd) < 0)
+                                    {
+                                        <td><a a asp-controller="Registration" asp-action="RemoveIndividualRegistration" asp-route-tournamentId="@t.Tournament.TournamentId" asp-route-applicationId="@ViewBag.UserId">Slett</a></td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                }
+                            </tr>
+                        }
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td>Du har ikke deltatt i noen turnering enda.</td>
+                    </tr>
+                }
+            </tbody>
+            </table>
+            @* The tournaments the user has made *@
+            <table class="table">
+            <thead>
+                <tr class="info">
+                    <th>Lagde turneringer</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if(Model.UsersMadeTournaments.Count != 0)
+                {
+                    foreach(var t in Model.UsersMadeTournaments)
+                    {
+                        if(t != null)
+                        {
+                            <tr>
+                                <td><a asp-controller="Tournament" asp-action="SeeTournamentDetails" asp-route-id="@t.TournamentId" asp-route-returnurl=@ViewData["returnurl"]>@t.TournamentName</a></td>
+                            </tr>
+                        }
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td>Du har ikke lagd noen turnering enda.</td>
+                    </tr>
+                }
+            </tbody>
+            </table>
+            <a asp-controller="Tournament" asp-action="TournamentList" asp-route-returnurl="/UserProfile/ShowUserProfile" class="btn btn-info col-sm-12" style="margin-bottom: 10px">Meld deg på en turnering</a> 
+            <a asp-controller="Tournament" asp-action="CreateTournament" class="btn btn-info col-sm-12" style="margin-bottom: 10px">Lag en turnering</a> 
+            <a asp-controller="Team" asp-action="CreateTeam" class="btn btn-info col-sm-12" style="margin-bottom: 10px">Lag et nytt lag</a> 
+        </div>
+    </div>
+</div>

@@ -1,0 +1,111 @@
+@model Tournament
+
+@{
+    ViewBag.Title = "Bekreft turneringsinformasjon";
+    Layout = "_Layout";
+}
+<div class="well container">
+    <h2>Bekreft turnering</h2>
+    <table class="table">
+    <thead>
+      <tr>
+        <th></th>
+        <th>Generelle opplysninger</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Tunrneringsnavn: </td>
+        <td>@Model.TournamentName</td>
+      </tr>
+      <tr>
+        <td>Sted: </td>
+        <td>@Model.Location</td>
+      </tr>
+      <tr>
+        <td>Påmeldingsavgift</td>
+        <td>@Model.RegisterFee</td>
+      </tr>
+      <tr>
+        <td>Sportstype</td>
+        <td>@Model.SportType.SportTypeName</td>
+      </tr>
+      <tr>
+        <td>Påmeldingstype</td>
+        <td>@Model.RegisterType.RegisterTypeName </td>
+      </tr>
+      <tr>
+        <td>Turneringstype</td>
+        <td>@Model.TournamentType.TournamentTypeName</td> 
+      </tr>
+      <tr>
+        <td>Godtar vilkår</td>
+        <td>@if(@Model.TermsAccepted)
+          {
+           @: Ja
+          }
+          else
+          {
+            @: Nei
+          }
+        </td>
+      </tr>
+      </tbody>
+      </table>
+      <table class="table">
+      <thead>
+      <tr>
+        <th></th>
+        <th>Om deltakerne</th>
+      </tr>
+      </thead>
+      <tbody>
+       <tr>
+        <td>Fra alder</td>
+        <td>@Model.AgeFrom</td>
+      </tr>
+       <tr>
+        <td>Til alder</td>
+        <td>@Model.AgeTo</td>
+      </tr>
+      <tr>
+        <td>Kjønn</td>
+        <td>@Model.GenderType.GenderTypeName</td>
+      </tr>
+      </tbody>
+      </table>
+      <table class="table">
+      <thead>
+      <tr>
+        <th></th>
+        <th>Tidsaspektene</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <th></th>
+        <th>Starter</th>
+        <th>Slutter</th>
+      </tr>
+      <tr>
+        <td>Påmeldingen</td>
+        <td>@Model.RegisterDateStart</td>
+        <td>@Model.RegisterDateEnd</td>
+      </tr>
+      <tr>
+        <td>Turneringen</td>
+        <td>@Model.TournamentDateStart</td>
+        <td>@Model.TournamentDateEnd</td>
+      </tr>
+    </tbody>
+  </table>
+
+    <div class="col-sm-2">
+    </div>
+    <div class="col-sm-8">
+            <a asp-controller="UserProfile" asp-action="ShowUserProfile" asp-route-message = "@ViewData["StatusMessage"]" class="btn btn-success" placeholder="">Bekreft turnering</a>
+            <a asp-controller="Tournament" asp-action="EditTournament" asp-route-id="@Model.TournamentId" class="btn btn-default" placeholder="">Gå tilbake å rediger opplysningene</a>
+            @*<input type="hidden" name="TournamentId" value="@Model.TournamentId" />*@
+            <a asp-controller="Tournament" asp-action="Delete" asp-route-id="@Model.TournamentId" asp-route-returnurl="/UserProfile/ShowUserProfile"  class="btn btn-danger" type="submit"><span class="fa fa-trash-o"></span> Slett</a>
+    </div>
+</div>

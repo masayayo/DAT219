@@ -1,0 +1,86 @@
+@model IEnumerable<Tournament>
+
+@* For every entry in the database we add a row with the following data to the table *@
+@foreach (var item in Model)
+{
+    <tr>
+        @* SPORT-TYPE *@
+        <td>
+            <label asp-for="@item.SportType.SportTypeName">@item.SportType.SportTypeName</label>
+        </td>
+
+        @* TOURNAMENT-NAME, with link to each respective tournament-homepage *@
+        <td>
+            <a asp-controller="Tournament" asp-action="SeeTournamentDetails" asp-route-id="@item.TournamentId" asp-route-returnurl="/Tournament/TournamentList">@item.TournamentName</a>
+        </td>
+
+        @* LOCATION *@
+        <td>
+            <label asp-for="@item.Location" >@item.Location</label>
+        </td>
+
+        @* GENDER *@
+        <td>
+            <label asp-for="@item.GenderType.GenderTypeName" >@item.GenderType.GenderTypeName</label>
+        </td>
+
+        @* TOURNAMENT-TYPE *@
+        <td>
+            <label asp-for="@item.TournamentType.TournamentTypeName" >@item.TournamentType.TournamentTypeName</label>
+        </td>
+
+        @* REGISTRATION-TYPE *@
+        <td>
+            <label asp-for="@item.RegisterType.RegisterTypeName" >@item.RegisterType.RegisterTypeName</label>
+        </td>
+        
+        @* STATUS *@
+        <td>
+            @if(item.TournamentDateStart.Subtract(DateTime.Now).TotalHours > 1){
+                    @* Over 1 hour until start, show datetime of start *@
+                    <label asp-for="@item.TournamentDateStart" >@item.TournamentDateStart </label>
+            }
+            
+            @if(item.TournamentDateStart.Subtract(DateTime.Now).TotalHours < 1 && item.TournamentDateStart.Subtract(DateTime.Now).TotalHours > 0){
+                    <p>Starter snart</p>     @* Less than an hour until start *@
+            }
+            
+            @if(item.TournamentDateStart.Subtract(DateTime.Now).TotalHours < 0 && item.TournamentDateEnd.Subtract(DateTime.Now).TotalHours > 0){
+                    <p>Pågår</p>      @* Less than 0h since start and more than 0h until end of tournament *@
+            }
+            
+            @if(item.TournamentDateEnd.Subtract(DateTime.Now).TotalHours < 0){
+                    <p>Ferdig</p>      @* Less than 0h since tournament ended *@
+            }
+        </td>
+
+        @* REGISTRATION *@
+        <td>
+            @if(item.RegisterDateEnd.Subtract(DateTime.Now).TotalHours < 0)
+            {
+                    <p>Stengt</p>      @* Less than 0h since registration ended *@
+            }
+
+            else if(item.RegisterDateStart.Subtract(DateTime.Now).TotalHours <= 0 && item.RegisterDateEnd.Subtract(DateTime.Now).TotalHours >= 0)
+            {
+                    @* More than 0h until registration ends *@
+                    if(item.RegisterType.RegisterTypeName == "Individuell")
+                        {
+                            <a asp-controller="Registration" asp-action="IndividualRegistration" asp-route-id="@item.TournamentId" class="btn btn-warning" asp-route-returnurl="/Tournament/TournamentList">@item.RegisterDateEnd</a>
+                        }
+                        else if(item.RegisterType.RegisterTypeName == "Lag")
+                        {
+                            <a asp-controller="Registration" asp-action="TeamRegistration" asp-route-id="@item.TournamentId" class="btn btn-warning" asp-route-returnurl="/Tournament/TournamentList">@item.RegisterDateEnd</a>
+                        }
+                        else 
+                        {
+                            <a asp-controller="Registration" asp-action="IndividualOrTeamRegistration" asp-route-id="@item.TournamentId" class="btn btn-warning" asp-route-returnurl="/Tournament/TournamentList">@item.RegisterDateEnd</a>
+                        }
+            }
+             else if(item.RegisterDateStart.Subtract(DateTime.Now).TotalHours > 0)
+             {
+                    <p>Starter snart</p>      @* More than 0h since registration ended *@
+            }
+        </td>
+    </tr>
+}

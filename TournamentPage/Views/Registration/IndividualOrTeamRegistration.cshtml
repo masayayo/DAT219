@@ -1,0 +1,56 @@
+@model TeamRegistrationViewModel
+
+@{
+    ViewBag.Title = "Lag eller individuell påmelding";
+    Layout = "_Layout";
+}
+@* This Razor view consists of two forms; an individual form and a team form. *@
+<div class="container">
+    <div class="row">
+        <h2>Individuell- eller lag- påmelding til @Model.IndividualRegistrationViewModel.Tournament.TournamentName </h2>
+        <p>Spesifiser type påmelding</p>
+        
+        <label class="checkbox-inline"><input id="MultiIndividualRadioBox" type="radio" name="RadioBox"> Individuell påmelding</label>
+        <label class="checkbox-inline"><input id="MultiTeamRadioBox" type="radio" name="RadioBox"> Lagpåmelding</label>
+        
+        @* The action attribute is set by jquery, becuase we do not know which team is being chosed on forhand (the teamId).
+        I.e we do not use the asp-taghelpers (asp-action, asp-controller, asp-route-somename etc) *@
+        <form id="MultiForm" method="POST">
+            
+            @* This values is taken by AJAX and used to peform a control. It is also used in the construction of the forms action url  *@ 
+            <input id="TournamentId" type="hidden" value="@Model.IndividualRegistrationViewModel.Tournament.TournamentId">
+            <input id="IndividualUserId" type="hidden" value="@Model.IndividualRegistrationViewModel.User.Id">
+            @* A div used to attach the ChooseTeam div *@
+            <div id="TheTeamContainerDiv"></div>
+            @* List over the users teams: *@
+            <div id="ChooseTeam">
+                <hr>
+                <p>Klikk på et lag for å velge det: </p>
+                <select id="TeamList" size="10" multiple style="min-width:10cm;">
+                    @if(Model.Teams.Count != 0)
+                    {
+                        foreach(var x in Model.Teams )
+                        {
+                            <option value="@x.TeamId"> @x.TeamName </option>
+                        }
+                    }
+                    else
+                    {
+                        @* The user has no team. Empty selectlist. *@ 
+                    }
+                </select>
+                @* The selected team *@
+                <p>Ditt valgte lag: </p>
+                <select id="SelectedTeam" size="1" multiple style="border-color: green; border-width: medium; padding: 5px; min-width:10cm;">
+                    <option value=""></option>
+                </select>
+                <hr>
+            </div>
+        
+            <div class="form-group" style="margin-top:10px;">
+                <input type="submit"class="btn btn-success" value="Påmelding"/>
+                <a asp-controller="Tournament" asp-action="TournamentList" class="btn btn-default">Tilbake</a>
+            </div>     
+        </form>
+    </div>
+</div>

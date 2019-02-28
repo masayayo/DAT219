@@ -1,0 +1,142 @@
+@model IEnumerable<TournamentPage.Models.Tournament>
+@{
+    ViewData["Title"] = "Tournament Page";
+}
+
+<style>
+.label {
+  color:black;
+}
+</style>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<div class="row">
+    <div class="col-md-6">
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <h1>Automatisk genererte kampoppsett</h1>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+    </div>
+    <div class="col-md-6 demo-single" style="margin-top:100px;">
+    </div>
+</div>
+
+
+<div class="row featured-tournaments">
+    <legend><h3>Kommende turneringer<h3></legend>
+    @foreach (var t in Model)
+    {
+        <a asp-controller="Tournament" asp-action="SeeTournamentDetails" asp-route-id="@t.TournamentId" asp-route-returnurl="/">
+        <div class="col-md-4" style="margin-bottom:10px;">
+          <div style="width:100%;height:200px;background:url(http://tpage.azurewebsites.net/images@(t.FeaturedImage));background-size:cover;background-position:center;">
+            <div style="position:absolute;bottom:0;background:rgba(0,0,0,0.7);width:92.5%;font-size:20px;">
+              @t.TournamentName <br>
+              @t.TournamentDateStart
+            </div>
+            </div>
+        </div>
+        </a>
+    }
+</div>
+
+<script>
+var t = [  
+   {  
+      "BracketId":0,
+      "Round":0,
+      "Bracket":0,
+      "TeamName":"Liverpool",
+      "Score":0
+   },
+   {  
+      "BracketId":0,
+      "Round":0,
+      "Bracket":0,
+      "TeamName":"Manchester",
+      "Score":0
+   },
+   {  
+      "BracketId":0,
+      "Round":0,
+      "Bracket":1,
+      "TeamName":"Arsenal",
+      "Score":0
+   },
+   {  
+      "BracketId":0,
+      "Round":0,
+      "Bracket":1,
+      "TeamName":"Chelsea",
+      "Score":0
+   },
+   {  
+      "BracketId":0,
+      "Round":0,
+      "Bracket":2,
+      "TeamName":"Bennsea",
+      "Score":0
+   },
+   {  
+      "BracketId":0,
+      "Round":0,
+      "Bracket":2,
+      "TeamName":"Mars",
+      "Score":0
+   },
+   {  
+      "BracketId":0,
+      "Round":0,
+      "Bracket":3,
+      "TeamName":"Ivanas",
+      "Score":0
+   },
+   {  
+      "BracketId":0,
+      "Round":0,
+      "Bracket":3,
+      "TeamName":"Sondro",
+      "Score":0
+   }
+]
+
+var singleElimination = {
+  "teams": [              // Matchups
+    [t[0].TeamName, t[1].TeamName], // First match
+    [t[2].TeamName, t[3].TeamName],
+    [t[4].TeamName, t[5].TeamName],
+    [t[6].TeamName, t[7].TeamName]  // Second match
+  ],
+  "results": [            // List of brackets (single elimination, so only one bracket)
+    [                     // List of rounds in bracket
+      [                   // First round in this bracket
+        [5, 6],          // Team 1 vs Team 2
+        [3, 5],            // Team 3 vs Team 4
+        [7, 2],
+        [1, 0],
+      ],
+      [
+       [1,0],
+       [0,3]
+      ],
+      [
+        [3,0]
+      ]
+    ]
+  ]
+}
+ 
+$(function() {
+	  $('.demo-single').bracket({
+      init: singleElimination /* data to initialize the bracket with */ })
+  })
+
+</script>

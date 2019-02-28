@@ -1,0 +1,76 @@
+@model ApplicationUser
+
+@{
+    ViewBag.Title = "Rediger bruker detaljer";
+    Layout = "_Layout";
+}
+
+@* Rediger brukerskjema *@
+<div class="container well well-lg">
+    <div class="col-sm-1"></div>
+    <div class="col-sm-10">
+        @* Navn *@
+        <h2>Her kan du redigere dine brukerdetaljer</h2> 
+    </div>
+    <div class="col-sm-4"></div>
+    <div asp-validation-summary="All" class="text-danger col-sm-8"></div>
+    <form method="post" asp-controller="UserProfile" asp-action="EditUserProfile" class="form-horizontal">
+        @* Postal code *@
+        <div class="form-group">
+            <label asp-for="PostalCode" class="col-sm-4 control-label">Nytt postnummer: </label>
+            <div class="col-sm-8">
+                <input asp-for="PostalCode" class="form-control" type="text" placeholder=""/>
+                <span asp-validation-for="PostalCode" class="text-danger"></span>
+            </div>
+        </div>
+        @* Post address *@
+        <div class="form-group">
+            <label asp-for="Address" class="col-sm-4 control-label">Nytt poststed: </label>
+            <div class="col-sm-8">
+                <input asp-for="Address" class="form-control" type="text" placeholder=""/>
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+        </div>
+        @* City/town *@
+        <div class="form-group">
+            <label asp-for="Town" class="col-sm-4 control-label">Ny by: </label>
+            <div class="col-sm-8">
+                <input asp-for="Town" class="form-control" type="text" placeholder=""/>
+                <span asp-validation-for="Town" class="text-danger"></span>
+            </div>
+        </div>
+        @* Nickname *@
+        <div class="form-group">
+            <label asp-for="NickName" class="col-sm-4 control-label">Nytt kallenavn: </label>
+            <div class="col-sm-8">
+                <input asp-for="NickName" class="form-control" type="text" placeholder=""/>
+                <span asp-validation-for="NickName" class="text-danger"></span>
+            </div>
+        </div>
+        @* Email *@
+        <div class="form-group">
+            <label asp-for="Email" class="col-sm-4 control-label">Ny emailadresse: </label>
+            <div class="col-sm-8">
+                <input asp-for="Email" class="form-control" type="text" placeholder=""/>
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+        </div>
+        @* Phonenumber *@
+        <div class="form-group">
+            <label asp-for="PhoneNumber" class="col-sm-4 control-label">Nytt telefonnummer: </label>
+            <div class="col-sm-8">
+                <input asp-for="PhoneNumber" class="form-control" type="text" placeholder=""/>
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            </div>
+        </div>
+        @* Submit button *@
+        <div class="form-group">
+            <div class="col-sm-4"></div>
+            <div class="col-sm-6">
+                <button class="btn btn-success" type="submit" placeholder="">Fullfør redigering</button>
+                <a asp-controller="UserProfile" asp-action="ShowUserProfile" class="btn btn-info">Avbryt</a> 
+            </div>
+        </div>
+    </form>
+</div>
+

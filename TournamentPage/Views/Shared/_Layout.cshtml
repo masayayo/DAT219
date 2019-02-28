@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - TournamentPage</title>
+
+    <environment names="Development">
+        <!-- JQuery -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+        <!-- AngularJS script -->
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+
+        <!-- Datetimepicker -->
+         <link rel="stylesheet" href="~/lib/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css" asp-append-version="true" />
+
+         <!-- Fontawesome -->
+         <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.css" asp-append-version="true" />
+
+         <!-- Bootstrap cyborg template -->
+         <link rel="stylesheet" href="~/css/bootstrap_cyborg.css">
+
+         <!-- Bootstrap filestyle -->
+         <script src="~/lib/bootstrap-filestyle-1.2.1/src/bootstrap-filestyle.js" /> 
+
+         @* Brackets scripts and css *@
+        <link rel="stylesheet" href="~/lib/brackets/css/jquery.group.min.css" />
+        <script src="~/lib/brackets/js/Bacon.min.js"></script>
+        <script src="~/lib/brackets/js/handlebars-v4.0.5.js"></script>
+        <script src="~/lib/brackets/js/lodash.js"></script>
+        <script src="~/lib/brackets/js/jquery.bracket.min.js"></script>
+        <link rel="stylesheet" href="~/lib/brackets/css/jquery.bracket.min.css" />
+        <script src="~/lib/brackets/js/jquery.group.min.js"></script>
+
+        @* Bootstrap tagsinput css *@
+         <link rel="stylesheet" href="~/lib/bootstrap-tagsinput-latest/src/bootstrap-tagsinput.css" />
+
+         @* Chosen library script and css *@
+         <script src="~/lib/chosen_v1.7.0/chosen.jquery.min.js"></script>
+         <link rel="stylesheet" href="~/lib/chosen_v1.7.0/chosen.min.css" />
+
+        <link rel="stylesheet" href="~/css/site.css" />
+    </environment>
+    <environment names="Staging,Production">
+        <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.6/css/bootstrap.min.css"
+              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
+        
+        <!-- JQuery -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+        <!-- AngularJS script -->
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+
+        <!-- Datetimepicker -->
+         <link rel="stylesheet" href="~/lib/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" asp-append-version="true" />
+        
+         <!-- Fontawesome -->
+         <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.min.css" asp-append-version="true" />
+
+         <!-- Bootstrap cyborg template -->
+         <link rel="stylesheet" href="~/css/bootstrap_cyborg.min.css">
+
+         <!-- Bootstrap filestyle -->
+         <script src="~/lib/bootstrap-filestyle-1.2.1/src/bootstrap-filestyle.js" />
+
+         @* Bootstrap tagsinput css *@
+         <link rel="stylesheet" href="~/lib/bootstrap-tagsinput-latest/src/bootstrap-tagsinput.css" />
+
+         @* Brackets scripts and css *@
+        <link rel="stylesheet" href="~/lib/brackets/css/jquery.group.min.css" />
+        <script src="~/lib/brackets/js/Bacon.min.js"></script>
+        <script src="~/lib/brackets/js/handlebars-v4.0.5.js"></script>
+        <script src="~/lib/brackets/js/lodash.js"></script>
+        <script src="~/lib/brackets/js/jquery.bracket.min.js"></script>
+        <link rel="stylesheet" href="~/lib/brackets/css/jquery.bracket.min.css" />
+        <script src="~/lib/brackets/js/jquery.group.min.js"></script>
+
+        @* Chosen library script and css *@
+         <script src="~/lib/chosen_v1.7.0/chosen.jquery.min.js"></script>
+         <link rel="stylesheet" href="~/lib/chosen_v1.7.0/chosen.min.css" />
+
+        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+    </environment>
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">TournamentPage</a>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a asp-area="" asp-controller="Tournament" asp-action="TournamentList" asp-route-returnurl="/">Turneringer</a></li>
+                </ul>
+                @await Html.PartialAsync("_LoginPartial")
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; 2017 - TournamentPage</p>
+        </footer>
+    </div>
+
+    <environment names="Development">
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+
+        <!-- AJAX -->
+        <script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.js"></script>
+
+         <!-- Datetimepeicker -->
+        <script src="~/lib/moment/min/moment.min.js" asp-append-version="true"></script>
+        <script src="~/lib/moment/locale/nb.js" asp-append-version="true"></script>
+
+        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+
+        <!-- Datetimepeicker -->
+        <script src="~/lib/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js" asp-append-version="true"></script>
+
+         @* Client side validation *@
+        <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>  
+        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+        
+        @* Brackets scripts and css *@
+        <link rel="stylesheet" href="~/lib/brackets/css/jquery.group.min.css" />
+        <script src="~/lib/brackets/js/Bacon.min.js"></script>
+        <script src="~/lib/brackets/js/handlebars-v4.0.5.js"></script>
+        <script src="~/lib/brackets/js/lodash.js"></script>
+        <script src="~/lib/brackets/js/jquery.bracket.min.js"></script>
+        <link rel="stylesheet" href="~/lib/brackets/css/jquery.bracket.min.css" />
+        <script src="~/lib/brackets/js/jquery.group.min.js"></script>
+
+         @* Chosen library script and css *@
+         <script src="~/lib/chosen_v1.7.0/chosen.jquery.min.js"></script>
+         <link rel="stylesheet" href="~/lib/chosen_v1.7.0/chosen.min.css" />
+
+         @* Bootstrap tagsinput script *@
+         <script src="~/lib/bootstrap-tagsinput-latest/src/bootstrap-tagsinput.js"></script>
+         <script src="~/lib/bootstrap-tagsinput-latest/src/bootstrap-tagsinput-angular.js"></script>
+
+        <script src="~/js/site.js" asp-append-version="true"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.3.min.js"
+                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+                asp-fallback-test="window.jQuery">
+        </script>
+
+        <!-- AJAX -->
+        <script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.min.js"></script>
+
+         <!-- Datetimepeicker -->
+        <script src="~/lib/moment/min/moment.min.js" asp-append-version="true"></script>
+        <script src="~/lib/moment/locale/nb.js" asp-append-version="true"></script>
+
+        <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.6/bootstrap.min.js"
+                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
+                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal">
+        </script>
+
+        <!-- Datetimepeicker -->
+        <script src="~/lib/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js" asp-append-version="true"></script>
+         
+        @* Brackets scripts and css *@
+        <link rel="stylesheet" href="~/lib/brackets/css/jquery.group.min.css" />
+        <script src="~/lib/brackets/js/Bacon.min.js"></script>
+        <script src="~/lib/brackets/js/handlebars-v4.0.5.js"></script>
+        <script src="~/lib/brackets/js/lodash.js"></script>
+        <script src="~/lib/brackets/js/jquery.bracket.min.js"></script>
+        <link rel="stylesheet" href="~/lib/brackets/css/jquery.bracket.min.css" />
+        <script src="~/lib/brackets/js/jquery.group.min.js"></script>
+
+         @* Chosen library script and css *@
+         <script src="~/lib/chosen_v1.7.0/chosen.jquery.min.js"></script>
+         <link rel="stylesheet" href="~/lib/chosen_v1.7.0/chosen.min.css" />
+
+
+         @* Bootstrap tagsinput script *@
+         <script src="~/lib/bootstrap-tagsinput-latest/src/bootstrap-tagsinput.js"></script>
+         <script src="~/lib/bootstrap-tagsinput-latest/src/bootstrap-tagsinput-angular.js"></script>
+
+        @* Client side validation *@
+        <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+        
+        <script src="~/js/site.min.js" asp-append-version="true"></script>
+    </environment>
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>

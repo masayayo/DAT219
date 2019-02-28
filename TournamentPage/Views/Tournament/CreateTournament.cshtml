@@ -1,0 +1,198 @@
+@model Tournament
+
+@{
+    ViewBag.Title = "Lag turnering";
+    Layout = "_Layout";
+}
+
+@* Må være logget inn for å få mulighet til å komme til dette skjemaet! *@
+
+@* Registreringsskjema for turnering *@
+<div class="container well well-lg">
+    <div class="col-sm-4"></div>
+    <div class="col-sm-8">
+        @* Overskrift *@
+        <h2>Registrer turneringen din</h2> 
+    </div>
+    <div class="col-sm-4"></div>
+    <div asp-validation-summary="All" class="text-danger col-sm-8"></div>
+    <form method="post" asp-controller="Tournament" asp-action="CreateTournament" class="form-horizontal">
+        @* Turneringsnavn *@
+        <div class="form-group">
+            <label asp-for="TournamentName" class="col-sm-4 control-label">Turneringsnavn: </label>
+            <div class="col-sm-8">
+                <input asp-for="TournamentName" class="form-control" type="text" placeholder=""/>
+                <span asp-validation-for="TournamentName" class="text-danger"></span>
+            </div>
+        </div>
+        @* Sted *@
+        <div class="form-group">
+            <label asp-for="Location" class="col-sm-4 control-label">Sted: </label>
+            <div class="col-sm-8">
+                <input asp-for="Location" class="form-control" type="text" placeholder=""/>
+                <span asp-validation-for="Location" class="text-danger"></span>
+            </div>
+        </div>
+        @* Påmeldingsavgift *@
+        <div class="form-group">
+            <label asp-for="RegisterFee" class="col-sm-4 control-label">Påmeldingsavgift per spiller: </label>
+            <div class="col-sm-2">
+                <div class="input-group">
+                    <input asp-for="RegisterFee" class="form-control" type="text" placeholder=""/>
+                    <span class="input-group-addon">Kr</span>
+                </div>
+                <span asp-validation-for="RegisterFee" class="text-danger"></span>
+            </div>
+        </div>
+        @* Sportstype *@
+        <div class="form-group">
+            <label asp-for="SportType.SportTypeName" class="col-sm-4 control-label">Sportstype: </label>
+            <div class="col-sm-8">
+                <select asp-for="SportType.SportTypeName" asp-items="ViewBag.SportsType" class="form-control">
+                    <option disabled selcted value="">Velg en sportstype: </option>
+                </select>
+                <span asp-validation-for="SportType.SportTypeName" class="text-danger"></span>
+            </div>
+        </div>
+        @* Påmeldingsstype *@
+        <div class="form-group">
+            <label asp-for="RegisterType.RegisterTypeName" class="col-sm-4 control-label">Påmeldingstype: </label>
+            <div class="col-sm-8">
+                <select asp-for="RegisterType.RegisterTypeName" asp-items="ViewBag.RegistrationType" class="form-control">
+                    <option disabled selcted value="">Velg en påmeldingstype: </option>
+                </select>
+                 <span asp-validation-for="RegisterType.RegisterTypeName" class="text-danger"></span>
+            </div>
+        </div>
+        @* Turneringsstype *@
+        <div class="form-group">
+            <label asp-for="TournamentType.TournamentTypeName" class="col-sm-4 control-label">Turneringstype: </label>
+            <div class="col-sm-8">
+                <select asp-for="TournamentType.TournamentTypeName" asp-items="ViewBag.TournamentType" class="form-control">
+                    <option disabled selcted value="">Velg en turneringstype: </option>
+                </select>
+                <span asp-validation-for="TournamentType.TournamentTypeName" class="text-danger"></span>
+            </div>
+        </div>
+        @* Kjønn *@
+        <div class="form-group">
+            <label asp-for="GenderType.GenderTypeName" class="col-sm-4 control-label">Kjønnstype: </label>
+            <div class="col-sm-8">
+                <select asp-for="GenderType.GenderTypeName" asp-items="ViewBag.GenderType" class="form-control">
+                    <option disabled selcted value="">Velg kjønn: </option>
+                </select>
+                <span asp-validation-for="GenderType.GenderTypeName" class="text-danger"></span>
+            </div>
+        </div>
+        @* Alder *@
+        <div class="row ">
+            <label class="col-sm-4 control-label">Sett aldersintervallet:</label>
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Fra:</label>
+                    <div class="input-group">
+                        <select asp-for="AgeFrom" asp-items="ViewBag.AgeList" class="form-control">
+                            <option disabled selcted value="">Velg alder Fra: </option>
+                        </select>
+                        <span asp-validation-for="AgeFrom" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">Til:</label>
+                    <div class="input-group">
+                        <select asp-for="AgeTo" asp-items="ViewBag.AgeList" class="form-control">
+                            <option disabled selcted value="">Velg alder Til: </option>
+                        </select>
+                        <span asp-validation-for="AgeTo" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+         @* Datetimepicker - påmeldingsintervallet settes her *@
+        <div class="row ">
+            <label class="col-sm-4 control-label">Sett påmeldingsintervallet:</label>
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Fra:</label>
+                    <div class="input-group date" id="dateStart1">
+                        <input asp-for="RegisterDateStart" asp-format="{0:d}" type="text" class="form-control" />
+                        <span class="input-group-addon">
+                            <span class="fa fa-calendar"></span>
+                        </span>
+                    </div>
+                    <span asp-validation-for="RegisterDateStart" class="text-danger col-sm-12"></span> 
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">Til:</label>
+                    <div class="input-group date" id="dateEnd1">
+                        <input asp-for="RegisterDateEnd" asp-format="{0:d}" type='text' class="form-control" placeholder="" />
+                        <span class="input-group-addon">
+                            <span class="fa fa-calendar"></span>
+                        </span>
+                    </div>
+                    <span asp-validation-for="RegisterDateEnd" class="text-danger col-sm-12"></span>
+                </div>
+            </div>
+        </div>
+        @* Datepicker - turneringsintervallet settes her *@
+        <div class="row ">
+            <label class="col-sm-4 control-label">Sett turneringsintervallet:</label>
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Fra:</label>
+                    <div class="input-group date" id="dateStart2">
+                        <input asp-for="TournamentDateStart" asp-format="{0:d}" type="text" class="form-control" />
+                        <span class="input-group-addon">
+                            <span class="fa fa-calendar"></span>
+                        </span> 
+                    </div>
+                    <span asp-validation-for="TournamentDateStart" class="text-danger col-sm-12"></span>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">Til:</label>
+                    <div class="input-group date" id="dateEnd2">
+                        <input asp-for="TournamentDateEnd" asp-format="{0:d}" type='text' class="form-control" />
+                        <span class="input-group-addon">
+                            <span class="fa fa-calendar"></span>
+                        </span>
+                    </div>
+                    <span asp-validation-for="TournamentDateEnd" class="text-danger col-sm-12"></span>
+                </div>
+            </div>
+        </div>
+        @* Terms *@
+        <div class="row ">
+            <label class="col-sm-4 control-label"><a>Aksepterer vilkårene:</a> </label>
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">
+                        <div class="input-group">
+                            <input asp-for="TermsAccepted" class="radio"/>
+                        </div>
+                        <span asp-validation-for="TermsAccepted" class="text-danger"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+        @* Submit knapp *@
+        <div class="form-group">
+            <div class="col-sm-4"></div>
+            <div class="col-sm-6">
+                <button class="btn btn-success" type="submit" placeholder="">Gå videre</button>
+                <a asp-controller="Home" asp-action="Index" class="btn btn-default" type="submit" placeholder="">Avbryt</a>
+                <a asp-controller="UserProfile" asp-action="ShowUserProfile" class="btn btn-info">Gå tilbake til profilsiden</a> 
+            </div>
+        </div>
+
+        @* Tournament contactperson - innlogget bruker - bruk hidden - legg til User i dbsetet *@
+    
+    </form>
+</div>
+
+

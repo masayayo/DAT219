@@ -1,0 +1,52 @@
+@model TeamRegistrationViewModel
+
+@{
+    ViewBag.Title = "Lagpåmelding til turnering";
+    Layout = "_Layout";
+}
+
+<div class="container">
+    <div class="row">
+        <h2>Lagpåmelding til @Model.IndividualRegistrationViewModel.Tournament.TournamentName </h2>
+        <p>Spesifiser type påmelding</p>
+        @* The action attribute is set by jquery, becuase we do not know which team is being chosed on forhand (the teamId).
+        I.e we do not use the asp-taghelpers (asp-action, asp-controller, asp-route-somename etc) *@
+        <form id="TeamRegForm" method="POST">
+            <label class="checkbox-inline"><input id="TeamRadioBox" type="radio" name="TeamRadioBox"> Lagpåmelding</label>
+            <div id="TheTeamContainerDiv"></div>
+            @* List over the users teams: *@
+            <div id="ChooseTeam1">
+                <hr>
+                <p>Klikk på et lag for å velge det: </p>
+                <select id="TeamList" size="10" multiple style="min-width:10cm;">
+                    @if(Model.Teams.Count != 0)
+                    {
+                        foreach(var x in Model.Teams )
+                        {
+                            <option value="@x.TeamId"> @x.TeamName </option>
+                        }
+                    }
+                    else
+                    {
+                         @* The user has no team. Empty selectlist. *@  
+                    }
+                </select>
+
+                @* The selected team *@
+                <p>Ditt valgte lag: </p>
+                <select id="SelectedTeam" size="1" multiple style="border-color: green; border-width: medium; padding: 5px; min-width:10cm;">
+                    <option value=""></option>
+                </select>
+                <hr>
+            </div>
+            @* Submit and cancel button *@
+            <div class="form-group" style="margin-top:10px;">
+                <input type="submit"class="btn btn-success" value="Påmelding"/>
+                <a asp-controller="Tournament" asp-action="TournamentList" class="btn btn-default">Tilbake</a>
+            </div>
+             @* This values is taken by jQuery to construct the action attribute value of the form schema *@
+            <input id="TournamentId" type="hidden" value="@Model.IndividualRegistrationViewModel.Tournament.TournamentId">
+            <input id="IndividualUserId" type="hidden" value="@Model.IndividualRegistrationViewModel.User.Id">
+        </form>
+    </div>
+</div>

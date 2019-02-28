@@ -1,0 +1,37 @@
+@model Team
+
+@{
+    ViewBag.Title = "Edit Team";
+}
+
+<div class="container well well-lg">
+    <div class="col-sm-4"></div>
+    <div class="col-sm-8">
+        @* Overskrift *@
+        <h2>Rediger lagnavnet ditt</h2> 
+    </div>
+    <div class="col-sm-4"></div>
+    <div asp-validation-summary="All" class="text-danger col-sm-8"></div>
+    <form method="post" asp-controller="Team" asp-action="EditTeam" class="form-horizontal">
+       <input type="hidden" asp-for="TeamId" />
+        @* Teamnavn *@
+        <div class="form-group">
+            <label asp-for="TeamName" class="col-sm-4 control-label">Lagnavn: </label>
+            <div class="col-sm-8">
+                <input asp-for="TeamName" class="form-control" type="text" placeholder=""/>
+                <span asp-validation-for="TeamName" class="text-danger"></span>
+            </div>
+        </div>
+
+        @* Submit knapp *@
+        <div class="form-group">
+            <div class="col-sm-4"></div>
+            <div class="col-sm-4">
+                <input asp-for="User" type="hidden">
+                <button class="btn btn-success" type="submit">Redigering fullført</button>
+                <a asp-controller="Team" asp-action="SeeTeamPlayers" asp-route-id="@Model.TeamId" class="btn btn-default">Avbryt</a>
+            </div>
+        </div>
+       
+    </form>
+</div>
